@@ -119,17 +119,7 @@ log_message() {
 }
 
 get_lid_state() {
-    if [[ -f /proc/acpi/button/lid/LID0/state ]]; then
-        local state_line=$(cat /proc/acpi/button/lid/LID0/state 2>/dev/null)
-        if [[ "$state_line" =~ closed ]]; then
-            echo "closed"
-        else
-            echo "open"
-        fi
-    else
-        # Fallback: check all lid state files
-        cat /proc/acpi/button/lid/*/state 2>/dev/null | grep -q "closed" && echo "closed" || echo "open"
-    fi
+    cat /proc/acpi/button/lid/*/state 2>/dev/null | grep -q "closed" && echo "closed" || echo "open"
 }
 
 get_external_display() {
@@ -146,7 +136,8 @@ handle_lid_close() {
         hyprctl keyword monitor "$LAPTOP_DISPLAY,disable" || log_message "Failed to disable laptop display"
         log_message "Laptop display disabled, $CURRENT_EXTERNAL remains as primary"
     else
-        log_message "No external monitor detected, keeping laptop display active"
+        log_message "No external monitor detected, hibernating system"
+        systemctl hibernate
     fi
 }
 
@@ -156,11 +147,11 @@ handle_lid_open() {
     CURRENT_EXTERNAL=$(get_external_display)
     if [[ -n "$CURRENT_EXTERNAL" ]]; then
         log_message "External monitor detected: $CURRENT_EXTERNAL, setting up dual monitor configuration"
-        hyprctl keyword monitor "$LAPTOP_DISPLAY,preferred,auto,auto" || log_message "Failed to enable laptop display"
+        hyprctl keyword monitor "$LAPTOP_DISPLAY,2880x1920@120,0x0,2" || log_message "Failed to enable laptop display"
         log_message "Dual monitor setup restored with $CURRENT_EXTERNAL"
     else
         log_message "No external monitor, enabling laptop display only"
-        hyprctl keyword monitor "$LAPTOP_DISPLAY,preferred,auto,auto" || log_message "Failed to enable laptop display"
+        hyprctl keyword monitor "$LAPTOP_DISPLAY,2880x1920@120,0x0,2" || log_message "Failed to enable laptop display"
     fi
 }
 
