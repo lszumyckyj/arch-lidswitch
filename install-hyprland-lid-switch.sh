@@ -9,7 +9,7 @@
 # - Works safely without crashing Wayland sessions
 #
 # Compatible with: Arch Linux, Hyprland, laptops with external monitors
-# Author: https://github.com/[your-username]/hyprland-lid-switch
+# Author: https://github.com/aserper/hyprland-lid-switch
 ################################################################################
 
 set -euo pipefail  # Exit on error, undefined vars, pipe failures
