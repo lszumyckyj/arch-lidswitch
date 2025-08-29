@@ -11,6 +11,7 @@ An automatic lid switch handler for Hyprland that intelligently manages monitor 
 - 🔧 **Zero Configuration**: Works out of the box after installation
 - 📝 **Comprehensive Logging**: Debug-friendly logs for troubleshooting
 - 🔁 **Automatic Startup**: Systemd user service starts with your session
+- 💤 **Smart Power Management**: Hibernates when lid closes without external monitor
 
 ## How It Works
 
@@ -25,7 +26,7 @@ An automatic lid switch handler for Hyprland that intelligently manages monitor 
 - Maintains your workspace layout
 
 ### Lid Closed + No External Monitor
-- Keeps laptop display active (prevents system lock-up)
+- Hibernates the system automatically
 
 ## Requirements
 
