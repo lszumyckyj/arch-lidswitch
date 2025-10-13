@@ -82,9 +82,9 @@ detect_monitors() {
         exit 1
     fi
     
-    log_info "Detected laptop monitor: $laptop_monitor"
+    log_info "Detected laptop monitor: $laptop_monitor" >&2
     if [[ -n "$external_monitor" ]]; then
-        log_info "Detected external monitor: $external_monitor"
+        log_info "Detected external monitor: $external_monitor" >&2
     else
         log_info "No external monitor currently connected"
     fi
@@ -174,7 +174,7 @@ case "$1" in
         ;;
 esac
 EOF
-
+    
     # Replace placeholder with actual laptop monitor
     sed -i "s/LAPTOP_MONITOR_PLACEHOLDER/$laptop_monitor/g" "$SCRIPTS_DIR/lid-switch.sh"
     
@@ -301,7 +301,7 @@ test_lid_detection() {
     log_info "Testing lid state detection..."
     
     if [[ -f /proc/acpi/button/lid/LID0/state ]]; then
-        local lid_state=$(cat /proc/acpi/button/lid/LID0/state 2>/dev/null)
+        local lid_state=$(cat /proc/acpi/button/lid/LID/state 2>/dev/null)
         log_success "Lid state detection working: $lid_state"
     elif [[ -f /proc/acpi/button/lid/*/state ]]; then
         local lid_state=$(cat /proc/acpi/button/lid/*/state 2>/dev/null)
