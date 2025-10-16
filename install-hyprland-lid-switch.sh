@@ -203,15 +203,15 @@ log_message() {
 }
 
 get_lid_state() {
-    if [[ -f /proc/acpi/button/lid/LID0/state ]]; then
-        local state_line=$(cat /proc/acpi/button/lid/LID0/state 2>/dev/null)
+    if [[ -f /proc/acpi/button/lid/LID/state ]]; then
+        local state_line=$(cat /proc/acpi/button/lid/LID/state 2>/dev/null)
         if [[ "$state_line" =~ closed ]]; then
             echo "closed"
         else
             echo "open"
         fi
     else
-        # Fallback for systems without specific LID0
+        # Fallback for systems without specific LID
         if [[ -f /proc/acpi/button/lid/*/state ]]; then
             cat /proc/acpi/button/lid/*/state 2>/dev/null | grep -q "closed" && echo "closed" || echo "open"
         else
@@ -300,7 +300,7 @@ enable_service() {
 test_lid_detection() {
     log_info "Testing lid state detection..."
     
-    if [[ -f /proc/acpi/button/lid/LID0/state ]]; then
+    if [[ -f /proc/acpi/button/lid/LID/state ]]; then
         local lid_state=$(cat /proc/acpi/button/lid/LID/state 2>/dev/null)
         log_success "Lid state detection working: $lid_state"
     elif [[ -f /proc/acpi/button/lid/*/state ]]; then
